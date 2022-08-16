@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import productApi from '../../api/productApi';
 import { Product } from '../../models/index'
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import './style.css'
 const img1 = require('./1.jpg');
 const img2 = require('./2.jpg');
@@ -10,6 +12,8 @@ const img5 = require('./5.jpg');
 
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([])
+    const selector = useAppSelector((state) => state.user.currentUser)
+    console.log(selector)
     useEffect(() => {
         productApi.getAll().then((data) => {
             setProducts(data)
@@ -65,9 +69,9 @@ const Products = () => {
 
                                             <div className="card-btn d-flex justify-content-center">
                                                 <div className="card-update">
-                                                    <a href="{% url 'Product:update-product' item.id %}">
+                                                    <Link to={`/product/detail`}>
                                                         <button type="button" className="btn btn-success m-2">View</button>
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -77,7 +81,11 @@ const Products = () => {
                         })}
                     </div>
                 </div>
+                <div className="d-flex justify-content-end">
+                    <Link to={`/product/add`}><button type="button" className="btn btn-success">Create</button></Link>
+                </div>
             </div>
+
         </>
     );
 }

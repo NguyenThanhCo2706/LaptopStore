@@ -1,4 +1,4 @@
-import { ListResponse, Product } from "../models"
+import { Product } from "../models"
 import axiosClient from "./axiosClient"
 
 

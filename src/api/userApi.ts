@@ -1,4 +1,4 @@
-import { ListResponse, User } from "../models"
+import { DataResLogin, User } from "../models"
 import axiosClient from "./axiosClient"
 
 
@@ -8,9 +8,13 @@ import axiosClient from "./axiosClient"
 
 
 const userApi = {
-    getAll(): Promise<ListResponse<User>> {
-        const url = '/auth/users'
-        return axiosClient.get(url)
+    async login(user: User): Promise<DataResLogin> {
+        const loginFormData = new URLSearchParams();
+        loginFormData.append("username", user.username)
+        loginFormData.append("password", user.password)
+        const url = '/user/login'
+        return await axiosClient.post(url, loginFormData)
+
     },
     getUserById(params: string): Promise<User> {
         const url = '/auth/users/' + params

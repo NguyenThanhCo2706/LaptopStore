@@ -1,9 +1,26 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { userActions } from "../user/userSlice";
+
 const Header = () => {
+    const user = useAppSelector((state) => state.user.currentUser)
+    let navigate = useNavigate()
+    const dispatch = useAppDispatch()
+    const handleRegister = () => {
+        navigate('user/login')
+    }
+    const handleLogout = () => {
+        dispatch(userActions.logout())
+        navigate('/')
+    }
+    const navigateHome = () => {
+        navigate('/')
+    }
     return (
         <div className="bg-dark">
             <div className="container">
                 <div className="row justify-content-md-between fs-1 text-white p-3">
-                    <div className="col-lg-4 col-md-6">
+                    <div className="col-lg-4 col-md-6" onClick={navigateHome}>
                         LaptopStore
                     </div>
                     <div className="align-self-center col-lg-4 col-md-6">
@@ -14,8 +31,18 @@ const Header = () => {
                         <div className="d-flex flex-column">
                             <span>Tai Khoan</span>
                             <div>
-                                <span>Đăng nhập | </span>
-                                <span>Đăng kí </span>
+                                {user ?
+                                    <>
+                                        <Link to={`/user/login`}>{user.username}</Link>
+                                        <span> | </span>
+                                        <span onClick={handleLogout}>Log out</span>
+                                    </>
+                                    :
+                                    <>
+                                        <Link to={`/user/login`}>Đăng nhập</Link>
+                                        <span> | </span>
+                                        <span onClick={handleRegister}>Đăng kí </span>
+                                    </>}
                             </div>
                         </div>
                     </div>

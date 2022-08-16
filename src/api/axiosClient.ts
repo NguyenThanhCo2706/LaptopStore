@@ -9,9 +9,9 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 
 const axiosClient = axios.create({
-    headers: {
-        'Content-Type': 'application/json'
-    }
+    // headers: {
+    //     'Content-Type': 'application/json'
+    // }
 });
 
 
