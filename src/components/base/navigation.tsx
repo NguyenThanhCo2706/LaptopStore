@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './style.css'
 
 const Navigation = () => {
@@ -12,7 +13,7 @@ const Navigation = () => {
                         <div className="collapse navbar-collapse justify-content-center">
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#">Trang chủ</a>
+                                    <Link to={`/`} className="nav-link" >Trang chủ</Link>
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="#">Giới thiệu</a>

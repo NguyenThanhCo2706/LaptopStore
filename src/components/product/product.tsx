@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import productApi from '../../api/productApi';
 import { Product } from '../../models/index'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -11,15 +11,16 @@ const img4 = require('./4.jpg');
 const img5 = require('./5.jpg');
 
 const Products = () => {
-    const [products, setProducts] = useState<Product[]>([])
-    const selector = useAppSelector((state) => state.user.currentUser)
-    console.log(selector)
+    const products: Product[] = useAppSelector((state) => state.product.products.allProducts)
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     useEffect(() => {
-        productApi.getAll().then((data) => {
-            setProducts(data)
-            console.log(products)
-        })
+        productApi.getAll(dispatch)
     }, [])
+
+    const viewDetailProduct = (id: string) => {
+        
+    }
     return (
         <>
             <div className="container mb-5">
@@ -69,8 +70,8 @@ const Products = () => {
 
                                             <div className="card-btn d-flex justify-content-center">
                                                 <div className="card-update">
-                                                    <Link to={`/product/detail`}>
-                                                        <button type="button" className="btn btn-success m-2">View</button>
+                                                    <Link to={`/product/detail/${item._id}`}>
+                                                        <button  type="button" className="btn btn-success m-2">View</button>
                                                     </Link>
                                                 </div>
                                             </div>

@@ -1,27 +1,22 @@
 import { configureStore, ThunkAction, combineReducers, Action } from '@reduxjs/toolkit';
-import userReducer from '../components/user/userSlice'
-import createSagaMiddleware from 'redux-saga'
-import rootSaga from './rootSaga'
+import userReducer from '../redux/userSlice'
+import productReducer from '../redux/productSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 
 import { createBrowserHistory } from "history";
 
-export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  router: connectRouter(history),
-  user: userReducer
+  user: userReducer,
+  product: productReducer
 })
 
-const sagaMiddleware = createSagaMiddleware()
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware(history))
+    getDefaultMiddleware()
 });
 
-//bữa nào cmt thử thằng ni lại rồi ngồi phân tích
-sagaMiddleware.run(rootSaga)
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

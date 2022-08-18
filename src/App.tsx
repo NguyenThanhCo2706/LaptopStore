@@ -7,6 +7,7 @@ import Footer from './components/base/footer';
 import AddProduct from "./components/product/addProduct";
 import Login from "./components/user/login";
 import DetailProduct from "./components/product/detailProduct";
+import Register from "./components/user/register";
 
 
 function App() {
@@ -18,9 +19,10 @@ function App() {
 
         <Route path="/" element={<Product />} />
         <Route path="/product/add" element={<AddProduct />} />
-        <Route path="/product/detail" element={<DetailProduct />} />
+        <Route path="/product/detail/:id" element={<DetailProduct />} />
 
         <Route path="/user/login" element={<Login />} />
+        <Route path="/user/register" element={<Register />} />
 
         {/* <Route path="/login" element={<Login setUser={setUsername} />} />
           <Route path="/viewstudent/:id" element={<Student />} />

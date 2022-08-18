@@ -1,21 +1,42 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { userActions } from "../user/userSlice";
+import { DataResLogin } from "../../models";
+import jwt_decode from "jwt-decode";
+import { userActions } from "../../redux/userSlice";
+
+interface MyToken {
+    username: string;
+    exp: number;
+}
 
 const Header = () => {
-    const user = useAppSelector((state) => state.user.currentUser)
+
+    const token: string = useAppSelector((state) => state.user.login.token)
+    console.log(token)
+    if (token) {
+        localStorage.setItem('token', token)
+    }
+
     let navigate = useNavigate()
     const dispatch = useAppDispatch()
     const handleRegister = () => {
-        navigate('user/login')
+        navigate('user/register')
     }
     const handleLogout = () => {
+        localStorage.clear()
         dispatch(userActions.logout())
         navigate('/')
     }
     const navigateHome = () => {
         navigate('/')
     }
+    useEffect(() => {
+        if (localStorage.token) {
+            dispatch(userActions.login_success(localStorage.token))
+        }
+    }, [])
+
     return (
         <div className="bg-dark">
             <div className="container">
@@ -31,9 +52,9 @@ const Header = () => {
                         <div className="d-flex flex-column">
                             <span>Tai Khoan</span>
                             <div>
-                                {user ?
+                                {token ?
                                     <>
-                                        <Link to={`/user/login`}>{user.username}</Link>
+                                        <Link to={`/user/login`}>{jwt_decode<MyToken>(token).username}</Link>
                                         <span> | </span>
                                         <span onClick={handleLogout}>Log out</span>
                                     </>
@@ -41,7 +62,7 @@ const Header = () => {
                                     <>
                                         <Link to={`/user/login`}>Đăng nhập</Link>
                                         <span> | </span>
-                                        <span onClick={handleRegister}>Đăng kí </span>
+                                        <Link to={`/user/register`}>Đăng kí</Link>
                                     </>}
                             </div>
                         </div>
