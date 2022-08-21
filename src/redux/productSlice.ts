@@ -3,7 +3,7 @@ import { Product } from '../models';
 
 
 
-export interface UserState {
+export interface ProductState {
     product: {
         isFetching: boolean;
         currentProduct?: Product;
@@ -14,9 +14,14 @@ export interface UserState {
         allProducts: Product[];
         error: boolean;
     }
+    productsSearch: {
+        isFetching: boolean;
+        allProducts: Product[];
+        error: boolean;
+    }
 }
 
-const initialState: UserState = {
+const initialState: ProductState = {
     product: {
         isFetching: false,
         currentProduct: undefined,
@@ -26,7 +31,12 @@ const initialState: UserState = {
         isFetching: false,
         allProducts: [],
         error: false,
-    }
+    },
+    productsSearch: {
+        isFetching: false,
+        allProducts: [],
+        error: false,
+    },
 }
 
 const productSlice = createSlice({
@@ -35,6 +45,8 @@ const productSlice = createSlice({
     reducers: {
         getAllProduct_init(state) {
             state.products.isFetching = true;
+            state.products.allProducts = [];
+
         },
         getAllProduct_success(state, action) {
             state.products.isFetching = false;
@@ -54,10 +66,22 @@ const productSlice = createSlice({
             state.product.isFetching = false;
             state.product.currentProduct = action.payload;
             state.product.error = false;
-
         },
         getProduct_error(state) {
             state.product.error = true;
+        },
+
+
+        getProductSearch_init(state) {
+            state.productsSearch.isFetching = true;
+        },
+        getProductSearch_success(state, action) {
+            state.productsSearch.isFetching = false;
+            state.productsSearch.allProducts = action.payload;
+            state.productsSearch.error = false;
+        },
+        getProductSearch_error(state) {
+            state.productsSearch.error = true;
         },
     }
 })

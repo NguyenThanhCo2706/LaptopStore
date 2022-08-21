@@ -38,7 +38,6 @@ const userSlice = createSlice({
             console.log('da logiing')
             state.login.isFetching = false;
             state.login.token = action.payload;
-            console.log(state.login.token)
             state.login.error = false;
         },
         login_error(state) {

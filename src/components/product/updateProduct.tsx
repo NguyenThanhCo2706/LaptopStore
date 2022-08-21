@@ -1,11 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
+import productApi from '../../api/productApi';
 import userApi from '../../api/userApi';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Category, Product } from '../../models'
-const AddProduct = () => {
+
+interface MyToken {
+    username: string;
+}
+const UpdateProduct = () => {
     const categories: Category[] = useAppSelector((state) => state.category.categories.allCategory)
+    const param: any = useParams()
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    // const product: Product = useAppSelector((state) => state.product.product.currentProduct) || {} as Product
+    // console.log(product)
     const [name, setName] = useState('')
     const [CPU, setCPU] = useState('')
     const [ram, setRam] = useState('')
@@ -13,11 +23,11 @@ const AddProduct = () => {
     const [card, setCard] = useState('')
     const [operatingSystem, setOperatingSystem] = useState('')
     const [img, setImg] = useState('')
-    const [price, setPrice] = useState('')
+    const [price, setPrice] = useState(0)
     const [category, setCategory] = useState('')
-    const navigate = useNavigate()
     const handleUserClick = async () => {
         const dataForm = new FormData();
+        dataForm.append("id", param.id)
         dataForm.append("name", name)
         dataForm.append("CPU", CPU)
         dataForm.append("ram", ram)
@@ -25,46 +35,47 @@ const AddProduct = () => {
         dataForm.append("card", card)
         dataForm.append("operatingSystem", operatingSystem)
         dataForm.append("img", img)
-        dataForm.append("price", price)
+        dataForm.append("price", String(price))
         dataForm.append("category", category)
         try {
             const response = await axiosClient({
-                method: "post",
+                method: "PUT",
                 url: "/product",
                 headers: {
                     "token": `Bearer ${localStorage.token}`,
                 },
                 data: dataForm
             });
-            alert('Create success')
-            navigate('/product/add')
+            alert('Update success')
+            navigate('/')
         } catch (error) {
             alert('Error')
             console.log(error)
         }
-        // const product: Product = {
-        //     name: name,
-        //     CPU: CPU,
-        //     ram: ram,
-        //     hardDrive: hardDrive,
-        //     card: card,
-        //     operatingSystem: operatingSystem,
-        //     img: img,
-        //     price: Number(price),
-        //     category: category
-        // }
     }
+
+    useEffect(() => {
+        axiosClient.get('/product/', {
+            params: { id: param.id },
+            headers: {
+                "token": `Bearer ${localStorage.token}`,
+            }
+        }).then((data) => {
+            const product: Product = data.data
+            setName(product.name)
+            setCPU(product.CPU)
+            setRam(product.ram)
+            setHardDrive(product.hardDrive)
+            setCard(product.card)
+            setOperatingSystem(product.operatingSystem)
+            setPrice(product.price)
+            setCategory(product.category)
+        })
+    }, [])
 
     const handleFileSelect = (event: any) => {
         setImg(event.target.files[0])
-        console.log(event.target.files)
     }
-
-    const changeSelect = (e: any) => {
-        console.log(e.target.value)
-        setCategory(e.target.value)
-    }
-
     return (
         <div className="container d-flex justify-content-center">
 
@@ -100,12 +111,12 @@ const AddProduct = () => {
                 </div>
                 <div className="mb-3 ">
                     <label className="form-label">Price</label>
-                    <input type="text" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} />
+                    <input type="text" className="form-control" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
                 </div>
 
                 <div className="mb-3 ">
                     <label className="form-label">Category</label>
-                    <select className="form-control" value={category} onChange={changeSelect} >
+                    <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} >
                         {categories?.map((item, index) => {
                             return (
                                 <option key={index} value={item._id}>{item.name}</option>
@@ -119,11 +130,11 @@ const AddProduct = () => {
                     <input type="text" className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} />
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button className="btn btn-primary btn-success mt-2 p-3" onClick={handleUserClick}>Create</button>
+                    <button className="btn btn-primary btn-success mt-2 p-3" onClick={handleUserClick}>Update</button>
                 </div>
             </div>
         </div>
     );
 }
 
-export default AddProduct;
+export default UpdateProduct;

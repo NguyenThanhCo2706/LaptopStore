@@ -1,14 +1,48 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import categoryApi from '../../api/categoryApi';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Category } from '../../models';
+import { categoryActions } from '../../redux/categorySlice';
+import { userActions } from '../../redux/userSlice';
 import './style.css'
 
+
+
 const Navigation = () => {
+    const categories: Category[] = useAppSelector((state) => state.category.categories.allCategory)
+    const [category, setCategory] = useState(false)
+    let navigate = useNavigate()
+    const dispatch = useAppDispatch()
+    const handleMouseEnter = () => {
+        setCategory(!category)
+    }
+    const handleMouseLeave = () => {
+        setCategory(false)
+    }
+    const navigateProduct = (id: any) => {
+        navigate(`/product/category/${id}`)
+    }
+    useEffect(() => {
+        categoryApi.getAll(dispatch)
+    }, [])
+
     return (
         <>
-            <div className="container bg-light">
+            <div className="container bg-light position-relative">
                 <nav className="navbar navbar-expand-lg navbar-light ">
                     <div className="container-fluid">
-                        <div className="me-5">
-                            <i className="fa-solid fa-list"></i> Danh Mục sản phẩm
+                        <div className="me-5 p-3 position-relative hover" onClick={handleMouseEnter}>
+                            <div >
+                                <i className="fa-solid fa-list"></i> Danh Mục sản phẩm
+                            </div>
+                            <div className="d-flex flex-column position-absolute border bg-white w-100 z-index" onClick={handleMouseEnter}>
+                                {category && categories?.map((item, index) => {
+                                    return (
+                                        <div key={index} className="p-2 hover" onClick={() => navigateProduct(item._id)}>{item.name}</div>
+                                    )
+                                })}
+                            </div>
                         </div>
                         <div className="collapse navbar-collapse justify-content-center">
                             <ul className="navbar-nav">
@@ -41,6 +75,7 @@ const Navigation = () => {
                         </div>
                     </div>
                 </nav>
+
             </div>
             <div className="line"></div>
         </>

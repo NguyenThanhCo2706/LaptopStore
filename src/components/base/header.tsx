@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { DataResLogin } from "../../models";
+import { DataResLogin, Product } from "../../models";
 import jwt_decode from "jwt-decode";
 import { userActions } from "../../redux/userSlice";
+import productApi from "../../api/productApi";
 
 interface MyToken {
     username: string;
-    exp: number;
+    admin: boolean;
 }
 
 const Header = () => {
-
     const token: string = useAppSelector((state) => state.user.login.token)
-    console.log(token)
+    const products: Product[] = useAppSelector((state) => state.product.productsSearch.allProducts)
     if (token) {
         localStorage.setItem('token', token)
     }
@@ -36,18 +36,41 @@ const Header = () => {
             dispatch(userActions.login_success(localStorage.token))
         }
     }, [])
+    const handleSearch = (e: any) => {
+        productApi.searchProduct(e.target.value, dispatch)
+    }
+    const navigateProduct = (str: any) => {
+        navigate('/product/detail/' + str)
+    }
+    const cartClick = () => {
+        try {
+            if (jwt_decode<MyToken>(localStorage.token).admin) {
+                navigate('/comfirmorder')
+            }
+            else navigate('/detailorder')
+        }
+        catch (error) {
 
+        }
+    }
     return (
         <div className="bg-dark">
             <div className="container">
                 <div className="row justify-content-md-between fs-1 text-white p-3">
-                    <div className="col-lg-4 col-md-6" onClick={navigateHome}>
+                    <div className="col-lg-4 col-md-6 hover d-lg-block " onClick={navigateHome}>
                         LaptopStore
                     </div>
-                    <div className="align-self-center col-lg-4 col-md-6">
-                        <input type="text" className="form-control" placeholder='Nhập tên sản phẩm, từ khóa cần tìm,...' />
+                    <div className="position-relative align-self-center col-lg-4 col-md-6">
+                        <input type="text" className="form-control" placeholder='Nhập tên sản phẩm, từ khóa cần tìm,...' onBlur={() => { console.log('cow') }} onChange={handleSearch} />
+                        <div className="position-absolute border text-dark  z-index fs-6 bg-light me-md-2">
+                            {products?.map((item, index) => {
+                                return (
+                                    <div key={index} className="p-2 hover" onClick={() => navigateProduct(item._id)}>{item.name}</div>
+                                )
+                            })}
+                        </div>
                     </div>
-                    <div className="d-lg-flex justify-content-center align-items-center align-self-center col-lg-4 d-none fs-5">
+                    <div className="d-flex justify-content-end align-items-center align-self-center col-lg-4 fs-5">
                         <i className="fa-solid fa-circle-user fs-1 me-2"></i>
                         <div className="d-flex flex-column">
                             <span>Tai Khoan</span>
@@ -65,6 +88,10 @@ const Header = () => {
                                         <Link to={`/user/register`}>Đăng kí</Link>
                                     </>}
                             </div>
+                        </div>
+
+                        <div className="ms-5">
+                            <i onClick={cartClick} className="fa-solid fa-cart-shopping fs-2 hover"></i>
                         </div>
                     </div>
                 </div>
