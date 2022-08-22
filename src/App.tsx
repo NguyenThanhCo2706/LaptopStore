@@ -10,8 +10,9 @@ import DetailProduct from "./components/product/detailProduct";
 import Register from "./components/user/register";
 import UpdateProduct from "./components/product/updateProduct";
 import CategoryProducts from "./components/product/categoryProduct";
-import DetailOrderCPN from "./components/order/detailOrder";
+import CartCustomer from "./components/order/cartCustomer";
 import ComfirmOrder from "./components/order/comfirmOrder";
+import ViewDetailOrder from "./components/order/viewDetailOrder";
 
 
 function App() {
@@ -26,8 +27,9 @@ function App() {
         <Route path="/product/detail/:id" element={<DetailProduct />} />
         <Route path="/product/update/:id" element={<UpdateProduct />} />
         <Route path="/product/category/:id" element={<CategoryProducts />} />
-        <Route path="/detailorder" element={<DetailOrderCPN />} />
+        <Route path="/cart" element={<CartCustomer />} />
         <Route path="/comfirmorder" element={<ComfirmOrder />} />
+        <Route path="/viewdetail/:orderId" element={<ViewDetailOrder />} />
 
 
 

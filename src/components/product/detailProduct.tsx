@@ -6,6 +6,7 @@ import productApi from '../../api/productApi';
 import detailOrderApi from '../../api/detailOrderApi';
 import axiosClient from '../../api/axiosClient';
 import jwt_decode from "jwt-decode";
+import { DetailOrder } from '../../models/detailOder';
 
 interface MyToken {
     username: string;
@@ -29,16 +30,17 @@ const DetailProduct = () => {
         productApi.getProductById(id, dispatch, navigate)
     }, [id])
     const addDetailOrder = async () => {
-        const dataForm = new URLSearchParams();
-        dataForm.append("productId", String(id))
-        dataForm.append("customerId", jwt_decode<MyToken>(localStorage.token).username)
-        dataForm.append("amount", "1")
+        const detailOrder: DetailOrder = {
+            customer: jwt_decode<MyToken>(localStorage.token).username,
+            product: {
+                productId: String(product._id),
+                productName: product.name
+            },
+            amount: 1
+        }
         try {
-            const response = await axiosClient({
-                method: "post",
-                url: "/detailOrder",
-                data: dataForm
-            });
+            const url = '/detailOrder'
+            await axiosClient.post(url, detailOrder);
             alert('Create success')
         } catch (error) {
             alert('Error')

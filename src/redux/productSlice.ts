@@ -61,6 +61,8 @@ const productSlice = createSlice({
 
         getProduct_init(state) {
             state.product.isFetching = true;
+            state.product.currentProduct = undefined;
+            state.product.error = false;
         },
         getProduct_success(state, action) {
             state.product.isFetching = false;
@@ -68,6 +70,8 @@ const productSlice = createSlice({
             state.product.error = false;
         },
         getProduct_error(state) {
+            state.product.isFetching = false;
+            state.product.currentProduct = undefined;
             state.product.error = true;
         },
 

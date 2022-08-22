@@ -47,7 +47,7 @@ const Header = () => {
             if (jwt_decode<MyToken>(localStorage.token).admin) {
                 navigate('/comfirmorder')
             }
-            else navigate('/detailorder')
+            else navigate('/cart')
         }
         catch (error) {
 

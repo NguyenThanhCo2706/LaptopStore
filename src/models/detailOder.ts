@@ -1,6 +1,11 @@
+export interface productCart {
+    productId: string;
+    productName: string;
+}
+
 export interface DetailOrder {
     _id?: string,
-    productId: string,
-    customerId: string,
+    product: productCart,
+    customer: string,
     amount: number,
 }

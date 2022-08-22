@@ -22,6 +22,7 @@ const orderslice = createSlice({
     reducers: {
         getOrders_init(state) {
             state.isFetching = true;
+            state.error = false;
         },
         getOrders_success(state, action) {
             state.isFetching = false;
@@ -30,6 +31,8 @@ const orderslice = createSlice({
 
         },
         getOrders_error(state) {
+            state.isFetching = false;
+            state.orders = [];
             state.error = true;
         },
 

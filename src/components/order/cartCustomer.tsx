@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import detailOrderApi from '../../api/detailOrderApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom';
 import { DetailOrder } from '../../models/detailOder';
 import jwt_decode from "jwt-decode";
-import axiosClient from '../../api/axiosClient';
-import { detailOrderActions } from '../../redux/detailOrderSlice';
 
 interface MyToken {
     username: string;
@@ -14,10 +11,9 @@ interface MyToken {
 }
 
 
-const DetailOrderCPN = () => {
+const CartCustomer = () => {
     let detailOrders: DetailOrder[] = useAppSelector((state) => state.detailOrder.detailOrders)
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (localStorage.token) {
@@ -29,21 +25,10 @@ const DetailOrderCPN = () => {
             alert('Giõ hàng trống')
             return
         }
-        try {
-            axiosClient.get('/order/init', {
-                params: { customerId: jwt_decode<MyToken>(localStorage.token).username }
-            })
-        }
-        catch (error) {
-
-        }
+        detailOrderApi.comfirmOrderUser(jwt_decode<MyToken>(localStorage.token).username, dispatch)
     }
     const removeDetailOrder = (id: any) => {
-        axiosClient.delete('/detailOrder', {
-            params: { id: id }
-        })
-        detailOrders = detailOrders.filter(detail => detail._id !== id)
-        dispatch(detailOrderActions.getDetailOrders_success(detailOrders))
+        detailOrderApi.removeDetailOrder(id, dispatch, detailOrders)
     }
     return (
         <>
@@ -58,7 +43,7 @@ const DetailOrderCPN = () => {
                     {detailOrders && detailOrders.map((item, index) => {
                         return (<div className="d-flex flex-row justify-content-evenly" key={index}>
                             <p>{index + 1}</p>
-                            <p>{item.productId}</p>
+                            <p>{item.product?.productName}</p>
                             <p>{item.amount}</p>
                             <i onClick={() => removeDetailOrder(item._id)} className="fa-solid fa-xmark"></i>
                         </div>)
@@ -72,4 +57,4 @@ const DetailOrderCPN = () => {
     );
 }
 
-export default DetailOrderCPN;
+export default CartCustomer;
