@@ -13,7 +13,14 @@ import CategoryProducts from "./components/product/categoryProduct";
 import CartCustomer from "./components/order/cartCustomer";
 import ComfirmOrder from "./components/order/comfirmOrder";
 import ViewDetailOrder from "./components/order/viewDetailOrder";
+import Page404 from "./components/base/404";
+import jwt_decode from "jwt-decode";
 
+
+interface MyToken {
+  username: string;
+  admin: boolean;
+}
 
 function App() {
   return (
@@ -21,20 +28,33 @@ function App() {
       <Header />
       <Navigation />
       <Routes>
-
         <Route path="/" element={<Product />} />
-        <Route path="/product/add" element={<AddProduct />} />
         <Route path="/product/detail/:id" element={<DetailProduct />} />
-        <Route path="/product/update/:id" element={<UpdateProduct />} />
         <Route path="/product/category/:id" element={<CategoryProducts />} />
-        <Route path="/cart" element={<CartCustomer />} />
-        <Route path="/comfirmorder" element={<ComfirmOrder />} />
-        <Route path="/viewdetail/:orderId" element={<ViewDetailOrder />} />
-
-
-
         <Route path="/user/login" element={<Login />} />
         <Route path="/user/register" element={<Register />} />
+        {
+          localStorage.token && jwt_decode<MyToken>(localStorage.token).admin ?
+            <>
+              <Route path="/product/add" element={<AddProduct />} />
+              <Route path="/product/update/:id" element={<UpdateProduct />} />
+              <Route path="/comfirmorder" element={<ComfirmOrder />} />
+              <Route path="/viewdetail/:orderId" element={<ViewDetailOrder />} />
+            </>
+            :
+            <></>
+        }
+        {
+          localStorage.token && jwt_decode<MyToken>(localStorage.token).admin === false ?
+            <>
+              <Route path="/cart" element={<CartCustomer />} />
+            </>
+            :
+            <>
+
+            </>
+        }
+        <Route path="*" element={<Page404 />} />
 
         {/* <Route path="/login" element={<Login setUser={setUsername} />} />
           <Route path="/viewstudent/:id" element={<Student />} />

@@ -13,6 +13,7 @@ interface MyToken {
 
 const Header = () => {
     const token: string = useAppSelector((state) => state.user.login.token)
+    const [searchProduct, setSearchProduct] = useState('')
     const products: Product[] = useAppSelector((state) => state.product.productsSearch.allProducts)
     if (token) {
         localStorage.setItem('token', token)
@@ -37,9 +38,11 @@ const Header = () => {
         }
     }, [])
     const handleSearch = (e: any) => {
+        setSearchProduct(e.target.value)
         productApi.searchProduct(e.target.value, dispatch)
     }
     const navigateProduct = (str: any) => {
+        setSearchProduct('')
         navigate('/product/detail/' + str)
     }
     const cartClick = () => {
@@ -61,9 +64,9 @@ const Header = () => {
                         LaptopStore
                     </div>
                     <div className="position-relative align-self-center col-lg-4 col-md-6">
-                        <input type="text" className="form-control" placeholder='Nhập tên sản phẩm, từ khóa cần tìm,...' onBlur={() => { console.log('cow') }} onChange={handleSearch} />
+                        <input type="text" className="form-control" placeholder='Nhập tên sản phẩm, từ khóa cần tìm,...' value={searchProduct} onChange={handleSearch} />
                         <div className="position-absolute border text-dark  z-index fs-6 bg-light me-md-2">
-                            {products?.map((item, index) => {
+                            {searchProduct && products?.map((item, index) => {
                                 return (
                                     <div key={index} className="p-2 hover" onClick={() => navigateProduct(item._id)}>{item.name}</div>
                                 )

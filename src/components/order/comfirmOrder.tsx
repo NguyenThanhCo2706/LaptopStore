@@ -16,9 +16,6 @@ const ComfirmOrder = () => {
     const orders: Order[] = useAppSelector((state) => state.order.orders)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const handleUserClick = () => {
-
-    }
     useEffect(() => {
         orderApi.getAllOrder(dispatch)
     }, [])

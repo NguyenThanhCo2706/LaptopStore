@@ -18,7 +18,7 @@ axiosClient.interceptors.request.use(function (config: AxiosRequestConfig) {
 
 
 axiosClient.interceptors.response.use(function (response: ResponseGenerator) {
-    return response;
+    return response.data;
 }, function (error) {
     console.log(error.status);
     return Promise.reject(error);
