@@ -30,10 +30,8 @@ const detailOrderApi = {
     async comfirmOrderUser(customer: any, dispatch: any) {
         dispatch(detailOrderActions.getDetailOrders_init())
         try {
-            const url = '/order/init'
-            await axiosClient.get(url, {
-                params: { customer: customer }
-            })
+            const url = '/order'
+            await axiosClient.post(url, { customer: customer })
             dispatch(detailOrderActions.getDetailOrders_success([]))
         }
         catch (err) {

@@ -102,9 +102,15 @@ const Products = () => {
                         })}
                     </div>
                 </div>
-                <div className="d-flex justify-content-center mt-3">
-                    <Link to={`/product/add`}><button type="button" className="btn btn-success p-3">Create</button></Link>
-                </div>
+                {token && jwt_decode<MyToken>(token).admin
+                    ?
+                    <div className="d-flex justify-content-center mt-3">
+                        <Link to={`/product/add`}><button type="button" className="btn btn-success p-3">Create</button></Link>
+                    </div>
+                    :
+                    <></>
+                }
+
             </div>
 
         </>

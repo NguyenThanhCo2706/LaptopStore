@@ -93,7 +93,7 @@ const DetailProduct = () => {
                                         bank, TP bank, Seabank, Kiên Long bank, OCB, VIB, ACB, MB, Vietcombank, SHB...</li>
                                 </ul>
 
-                                {jwt_decode<MyToken>(localStorage.token).admin !== true ?
+                                {localStorage.token && jwt_decode<MyToken>(localStorage.token).admin !== true ?
                                     <>
                                         <div className='d-flex justify-content-center'>
                                             <button className='btn btn-success p-2' onClick={addDetailOrder}>Đặt hàng</button>

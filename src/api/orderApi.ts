@@ -29,7 +29,7 @@ const orderApi = {
             const dataForm = new URLSearchParams();
             dataForm.append("orderId", orderId)
             dataForm.append("admin", admin)
-            const res = await axiosClient.post(url, dataForm)
+            const res = await axiosClient.put(url, dataForm)
             dispatch(orderActions.getOrders_success(res.data))
         }
         catch (err) {
