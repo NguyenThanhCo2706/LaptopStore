@@ -4,11 +4,6 @@ import { categoryActions } from "../redux/categorySlice"
 import axiosClient from "./axiosClient"
 
 
-
-
-
-
-
 const categoryApi = {
     async getAll(dispatch: any) {
         dispatch(categoryActions.getAllCategory_init())

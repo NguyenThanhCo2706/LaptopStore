@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import userApi from '../../api/userApi';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { User } from '../../models'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom';
-const img = require('./laptop-login.png');
+const img = require('../../public/img/laptop-login.png');
 
 
 
@@ -13,12 +13,17 @@ const Login = () => {
     const [password, setPassword] = useState<string>('')
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const handleUserClick = () => {
-        const user: User = {
-            username: username,
-            password: password
+    const handleUserClick = async () => {
+        try {
+            const user: User = {
+                username: username,
+                password: password
+            }   
+            await userApi.login(user, dispatch, navigate)
         }
-        userApi.login(user, dispatch, navigate)
+        catch (error) {
+            alert("Tài khoản hoặc mật khẩu không đúng")
+        }
     }
     return (
         <>
@@ -34,7 +39,7 @@ const Login = () => {
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password</label>
-                            <input type="text" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <button className="btn btn-primary btn-lg mt-2" onClick={handleUserClick}>Login</button>
                         <div className="d-flex justify-content-center mt-3">

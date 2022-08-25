@@ -4,20 +4,16 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useNavigate, useParams } from 'react-router-dom'
 import { DetailOrder } from '../../models/detailOder';
 
-interface MyToken {
-    username: string;
-    admin: boolean;
-}
-
 
 const ViewDetailOrder = () => {
     let detailOrders: DetailOrder[] = useAppSelector((state) => state.detailOrder.detailOrders)
+    const token: string = useAppSelector((state) => state.user.login.token)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const { orderId } = useParams()
     useEffect(() => {
         if (localStorage.token) {
-            detailOrderApi.viewDetailOrder(orderId, dispatch)
+            detailOrderApi.viewDetailOrder(orderId, dispatch, token)
         }
     }, [])
     return (
@@ -37,8 +33,8 @@ const ViewDetailOrder = () => {
                         </div>)
                     })}
                 </div>
-                <div className="d-flex justify-content-end">
-                    <button className="btn btn-seconda  ry" onClick={() => { navigate('/comfirmorder') }}>Back</button>
+                <div className="d-flex justify-content-end mb-3">
+                    <button className="btn btn-secondary" onClick={() => { navigate('/comfirmorder') }}>Back</button>
                 </div>
             </div>
         </>

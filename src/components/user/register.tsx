@@ -1,18 +1,15 @@
-import { useEffect, useState } from 'react';
-import userApi from '../../api/userApi';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { User } from '../../models'
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axiosClient from '../../api/axiosClient';
 import { Link } from 'react-router-dom';
-const img = require('./laptop-login.png');
+const img = require('../../public/img/laptop-login.png');
+
 
 
 const Register = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [rePassword, setRePassword] = useState<string>('')
-    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const handleUserClick = async () => {
         if (password !== rePassword) {
@@ -30,16 +27,8 @@ const Register = () => {
             });
             navigate('/')
         } catch (error) {
-            alert('Register Error')
-            console.log(error)
+            alert('Đăng kí tài khoản thất bại')
         }
-        // const user: User = {
-        //     username: username,
-        //     password: password
-        // }
-        // userApi.register(user)
-
-
     }
     return (
         <>
@@ -55,13 +44,13 @@ const Register = () => {
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password</label>
-                            <input type="text" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Re-Password</label>
-                            <input type="text" className="form-control" value={rePassword} onChange={(e) => setRePassword(e.target.value)} />
+                            <input type="password" className="form-control" value={rePassword} onChange={(e) => setRePassword(e.target.value)} />
                         </div>
-                        <button className="btn btn-primary btn-lg mt-2" onClick={handleUserClick}>Click</button>
+                        <button className="btn btn-primary btn-lg mt-2" onClick={handleUserClick}>Đăng kí</button>
                         <div className="d-flex justify-content-center mt-3">
                             <Link className="" to="/user/login">Login</Link>
                         </div>

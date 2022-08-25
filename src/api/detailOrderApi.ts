@@ -3,46 +3,71 @@ import { detailOrderActions } from "../redux/detailOrderSlice"
 import axiosClient from "./axiosClient"
 
 
-
 const detailOrderApi = {
-    async getOrderDetailAsync(customer: any, dispatch: any) {
+    async getOrderDetailAsync(customer: any, dispatch: any, token: string) {
         dispatch(detailOrderActions.getDetailOrders_init())
         try {
             const url = '/detailOrder/'
-            const res = await axiosClient.get(url, { params: { customer: customer } })
+            const res = await axiosClient({
+                method: "get",
+                url: url,
+                headers: {
+                    "authorization": `Bearer ${token}`,
+                },
+                params: { customer: customer }
+            })
             dispatch(detailOrderActions.getDetailOrders_success(res.data))
         }
         catch (err) {
             dispatch(detailOrderActions.getDetailOrders_error())
         }
     },
-    async viewDetailOrder(orderId: any, dispatch: any) {
+    async viewDetailOrder(orderId: any, dispatch: any, token: string) {
         dispatch(detailOrderActions.getDetailOrders_init())
         try {
             const url = '/detailOrder/view'
-            const res = await axiosClient.get(url, { params: { orderId: orderId } })
+            const res = await axiosClient({
+                method: "get",
+                url: url,
+                headers: {
+                    "authorization": `Bearer ${token}`,
+                },
+                params: { orderId: orderId }
+            })
             dispatch(detailOrderActions.getDetailOrders_success(res.data))
         }
         catch (err) {
             dispatch(detailOrderActions.getDetailOrders_error())
         }
     },
-    async comfirmOrderUser(customer: any, dispatch: any) {
+    async comfirmOrderUser(customer: any, dispatch: any, token: string) {
         dispatch(detailOrderActions.getDetailOrders_init())
         try {
             const url = '/order'
-            await axiosClient.post(url, { customer: customer })
+            await axiosClient({
+                method: "post",
+                url: url,
+                headers: {
+                    "authorization": `Bearer ${token}`,
+                },
+                data: { customer: customer }
+            })
             dispatch(detailOrderActions.getDetailOrders_success([]))
         }
         catch (err) {
             dispatch(detailOrderActions.getDetailOrders_error())
         }
     },
-    async removeDetailOrder(id: any, dispatch: any, detailOrders: DetailOrder[]) {
+    async removeDetailOrder(id: any, dispatch: any, detailOrders: DetailOrder[], token: string) {
         dispatch(detailOrderActions.getDetailOrders_init())
         try {
             const url = '/detailOrder'
-            axiosClient.delete(url, {
+            axiosClient({
+                method: "delete",
+                url: url,
+                headers: {
+                    "authorization": `Bearer ${token}`,
+                },
                 params: { id: id }
             })
             detailOrders = detailOrders.filter(detail => detail._id !== id)

@@ -1,22 +1,16 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useParams, useNavigate } from "react-router-dom";
-import { Product } from '../../models'
+import { MyToken, Product } from '../../models'
 import productApi from '../../api/productApi';
-import detailOrderApi from '../../api/detailOrderApi';
 import axiosClient from '../../api/axiosClient';
 import jwt_decode from "jwt-decode";
 import { DetailOrder } from '../../models/detailOder';
 
-interface MyToken {
-    username: string;
-    admin: boolean;
-}
-
-
 
 const DetailProduct = () => {
     const product: Product = useAppSelector((state) => state.product.product.currentProduct) || {} as Product
+    const token = useAppSelector((state) => state.user.login.token)
     const { id } = useParams()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -40,11 +34,17 @@ const DetailProduct = () => {
         }
         try {
             const url = '/detailOrder'
-            await axiosClient.post(url, detailOrder);
-            alert('Create success')
+            await axiosClient({
+                method: "post",
+                url: "/detailOrder",
+                headers: {
+                    "authorization": `Bearer ${token}`,
+                },
+                data: detailOrder
+            })
+            alert('Đặt hàng thành công')
         } catch (error) {
-            alert('Error')
-            console.log(error)
+            alert('Đặt hàng chưa thành công')
         }
     }
     return (
@@ -61,7 +61,9 @@ const DetailProduct = () => {
                     <div className="row">
                         <div className="col-4 d-flex flex-column">
                             {/* <div className="d-flex"> */}
-                            <img src={"/public/uploads/" + product.img} className="card-img-detail" alt="..." />
+                            {product.img ? <>
+                                <img src={"/public/uploads/" + product.img} className="card-img-detail" alt="..." />
+                            </> : <></>}
                             <ul className="card-body">
                                 <li className="card-text"><b>CPU:</b> {product.CPU}</li>
                                 <li className="card-text"><b>ROM:</b> {product.hardDrive}</li>
@@ -74,6 +76,7 @@ const DetailProduct = () => {
                             </div>
                             {/* </div> */}
                         </div>
+
                         <div className="col-4">
                             <div className="p-2">
 

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
-import userApi from '../../api/userApi';
 import { useAppSelector } from '../../app/hooks';
-import { Category, Product } from '../../models'
+import { Category } from '../../models'
 const AddProduct = () => {
     const categories: Category[] = useAppSelector((state) => state.category.categories.allCategory)
     const [name, setName] = useState('')
@@ -16,6 +15,11 @@ const AddProduct = () => {
     const [price, setPrice] = useState('')
     const [category, setCategory] = useState('')
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setCategory(String(categories[0]?._id))
+    }, [categories])
+
     const handleUserClick = async () => {
         const dataForm = new FormData();
         dataForm.append("name", name)
@@ -28,19 +32,18 @@ const AddProduct = () => {
         dataForm.append("price", price)
         dataForm.append("category", category)
         try {
-            const response = await axiosClient({
+            await axiosClient({
                 method: "post",
                 url: "/product",
                 headers: {
-                    "token": `Bearer ${localStorage.token}`,
+                    "authorization": `Bearer ${localStorage.token}`,
                 },
                 data: dataForm
             });
             alert('Create success')
             navigate('/product/add')
         } catch (error) {
-            alert('Error')
-            console.log(error)
+            alert('Có lỗi khi thêm sản phẩm')
         }
         // const product: Product = {
         //     name: name,
@@ -57,11 +60,9 @@ const AddProduct = () => {
 
     const handleFileSelect = (event: any) => {
         setImg(event.target.files[0])
-        console.log(event.target.files)
     }
 
     const changeSelect = (e: any) => {
-        console.log(e.target.value)
         setCategory(e.target.value)
     }
 
@@ -112,11 +113,6 @@ const AddProduct = () => {
                             )
                         })}
                     </select>
-                </div>
-
-                <div className="mb-3 ">
-                    <label className="form-label">Category</label>
-                    <input type="text" className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} />
                 </div>
                 <div className="d-flex justify-content-center">
                     <button className="btn btn-primary btn-success mt-2 p-3" onClick={handleUserClick}>Create</button>

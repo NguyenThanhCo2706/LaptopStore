@@ -15,7 +15,8 @@ import ComfirmOrder from "./components/order/comfirmOrder";
 import ViewDetailOrder from "./components/order/viewDetailOrder";
 import Page404 from "./components/base/404";
 import jwt_decode from "jwt-decode";
-
+import './app.css'
+import { useAppSelector } from "./app/hooks";
 
 interface MyToken {
   username: string;
@@ -23,6 +24,7 @@ interface MyToken {
 }
 
 function App() {
+  const token: string = useAppSelector((state) => state.user.login.token)
   return (
     <Router>
       <Header />
@@ -34,7 +36,7 @@ function App() {
         <Route path="/user/login" element={<Login />} />
         <Route path="/user/register" element={<Register />} />
         {
-          localStorage.token && jwt_decode<MyToken>(localStorage.token).admin ?
+          token && jwt_decode<MyToken>(token).admin ?
             <>
               <Route path="/product/add" element={<AddProduct />} />
               <Route path="/product/update/:id" element={<UpdateProduct />} />
@@ -45,29 +47,17 @@ function App() {
             <></>
         }
         {
-          localStorage.token && jwt_decode<MyToken>(localStorage.token).admin === false ?
+          token && jwt_decode<MyToken>(token).admin === false ?
             <>
               <Route path="/cart" element={<CartCustomer />} />
             </>
             :
-            <>
-
-            </>
+            <></>
         }
         <Route path="*" element={<Page404 />} />
-
-        {/* <Route path="/login" element={<Login setUser={setUsername} />} />
-          <Route path="/viewstudent/:id" element={<Student />} />
-          <Route path="/updatestudent/:id" element={<UpdateStudent setStudents={setStudents} />} />
-          <Route path="/createstudent" element={<CreateStudent setStudents={setStudents} />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/listsearch" element={<SearchPage listSearch={listSearch} />} /> */}
-
       </Routes>
-
       <Footer />
     </Router>
-
   );
 }
 

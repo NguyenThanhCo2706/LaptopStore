@@ -1,32 +1,31 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { Link } from "react-router-dom";
 import productApi from '../../api/productApi';
-import { Product } from '../../models/index'
+import { MyToken, Product } from '../../models/index'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import jwt_decode from "jwt-decode";
-import './style.css'
-const img1 = require('./1.jpg');
-const img2 = require('./2.jpg');
-const img3 = require('./3.jpg');
-const img4 = require('./4.jpg');
-const img5 = require('./5.jpg');
+
+const img1 = require('../../public/img/1.jpg');
+const img2 = require('../../public/img/2.jpg');
+const img3 = require('../../public/img/3.jpg');
+const img4 = require('../../public/img/4.jpg');
+const img5 = require('../../public/img/5.jpg');
 
 
-interface MyToken {
-    username: string;
-    admin: boolean;
-}
 
 const Products = () => {
     const products: Product[] = useAppSelector((state) => state.product.products.allProducts)
-    console.log(products)
     const token: string = useAppSelector((state) => state.user.login.token)
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
     useEffect(() => {
         productApi.getAll(dispatch)
     }, [])
-
+    const convertMoney = (x: number) => {
+        if (x) {
+            return (x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
+        }
+        return '0'
+    }
     const removeProduct = (id: string) => {
         productApi.removeProduct(id, localStorage.token, dispatch, products)
     }
@@ -75,7 +74,7 @@ const Products = () => {
                                         <div className="card-body">
                                             <p className="card-title">{item.name}</p>
                                             <p className="card-text">{item.CPU}, {item.hardDrive}, {item.ram}, {item.operatingSystem}, {item.card}</p>
-                                            <h3 className="card-price text-center">{item.price}</h3>
+                                            <h4 className="card-price text-center">{convertMoney(item.price)}</h4>
 
                                             <div className="card-btn d-flex justify-content-center">
                                                 <div className="card-update">

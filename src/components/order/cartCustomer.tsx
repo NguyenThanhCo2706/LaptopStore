@@ -1,23 +1,19 @@
 import { useEffect } from 'react';
 import detailOrderApi from '../../api/detailOrderApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useNavigate } from 'react-router-dom'
 import { DetailOrder } from '../../models/detailOder';
 import jwt_decode from "jwt-decode";
-
-interface MyToken {
-    username: string;
-    admin: boolean;
-}
+import { MyToken } from '../../models';
 
 
 const CartCustomer = () => {
     let detailOrders: DetailOrder[] = useAppSelector((state) => state.detailOrder.detailOrders)
+    const token: string = useAppSelector((state) => state.user.login.token)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (localStorage.token) {
-            detailOrderApi.getOrderDetailAsync(jwt_decode<MyToken>(localStorage.token).username, dispatch)
+            detailOrderApi.getOrderDetailAsync(jwt_decode<MyToken>(localStorage.token).username, dispatch, token)
         }
     }, [])
     const handleConfirmUser = () => {
@@ -25,10 +21,10 @@ const CartCustomer = () => {
             alert('Giõ hàng trống')
             return
         }
-        detailOrderApi.comfirmOrderUser(jwt_decode<MyToken>(localStorage.token).username, dispatch)
+        detailOrderApi.comfirmOrderUser(jwt_decode<MyToken>(localStorage.token).username, dispatch, token)
     }
     const removeDetailOrder = (id: any) => {
-        detailOrderApi.removeDetailOrder(id, dispatch, detailOrders)
+        detailOrderApi.removeDetailOrder(id, dispatch, detailOrders, token)
     }
     return (
         <>

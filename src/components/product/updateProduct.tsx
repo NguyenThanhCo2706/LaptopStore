@@ -1,21 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
-import productApi from '../../api/productApi';
-import userApi from '../../api/userApi';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks';
 import { Category, Product } from '../../models'
 
-interface MyToken {
-    username: string;
-}
+
 const UpdateProduct = () => {
     const categories: Category[] = useAppSelector((state) => state.category.categories.allCategory)
     const param: any = useParams()
-    const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    // const product: Product = useAppSelector((state) => state.product.product.currentProduct) || {} as Product
-    // console.log(product)
     const [name, setName] = useState('')
     const [CPU, setCPU] = useState('')
     const [ram, setRam] = useState('')
@@ -25,6 +18,9 @@ const UpdateProduct = () => {
     const [img, setImg] = useState('')
     const [price, setPrice] = useState(0)
     const [category, setCategory] = useState('')
+    useEffect(() => {
+        console.log('cow')
+    }, [categories])
     const handleUserClick = async () => {
         const dataForm = new FormData();
         dataForm.append("id", param.id)
@@ -38,19 +34,18 @@ const UpdateProduct = () => {
         dataForm.append("price", String(price))
         dataForm.append("category", category)
         try {
-            const response = await axiosClient({
+            await axiosClient({
                 method: "PUT",
                 url: "/product",
                 headers: {
-                    "token": `Bearer ${localStorage.token}`,
+                    "authorization": `Bearer ${localStorage.token}`,
                 },
                 data: dataForm
             });
-            alert('Update success')
+            alert('Cập nhật sản phẩm thành công')
             navigate('/')
         } catch (error) {
-            alert('Error')
-            console.log(error)
+            alert('Có lỗi xảy ra trong quá trình cập nhật')
         }
     }
 
@@ -123,11 +118,6 @@ const UpdateProduct = () => {
                             )
                         })}
                     </select>
-                </div>
-
-                <div className="mb-3 ">
-                    <label className="form-label">Category</label>
-                    <input type="text" className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} />
                 </div>
                 <div className="d-flex justify-content-center">
                     <button className="btn btn-primary btn-success mt-2 p-3" onClick={handleUserClick}>Update</button>

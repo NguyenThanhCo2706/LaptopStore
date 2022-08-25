@@ -5,8 +5,6 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Category } from '../../models';
 import { categoryActions } from '../../redux/categorySlice';
 import { userActions } from '../../redux/userSlice';
-import './style.css'
-
 
 
 const Navigation = () => {

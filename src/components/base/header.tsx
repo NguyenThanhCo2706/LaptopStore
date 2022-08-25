@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { DataResLogin, Product } from "../../models";
+import { DataResLogin, MyToken, Product } from "../../models";
 import jwt_decode from "jwt-decode";
 import { userActions } from "../../redux/userSlice";
 import productApi from "../../api/productApi";
 
-interface MyToken {
-    username: string;
-    admin: boolean;
-}
 
 const Header = () => {
     const token: string = useAppSelector((state) => state.user.login.token)
@@ -47,13 +43,13 @@ const Header = () => {
     }
     const cartClick = () => {
         try {
-            if (jwt_decode<MyToken>(localStorage.token).admin) {
+            if (jwt_decode<MyToken>(token).admin) {
                 navigate('/comfirmorder')
             }
             else navigate('/cart')
         }
         catch (error) {
-
+            alert('Bạn phải đăng nhập')
         }
     }
     return (
@@ -76,19 +72,19 @@ const Header = () => {
                     <div className="d-flex justify-content-end align-items-center align-self-center col-lg-4 fs-5">
                         <i className="fa-solid fa-circle-user fs-1 me-2"></i>
                         <div className="d-flex flex-column">
-                            <span>Tai Khoan</span>
+                            <span>Tài khoản</span>
                             <div>
                                 {token ?
                                     <>
-                                        <Link to={`/user/login`}>{jwt_decode<MyToken>(token).username}</Link>
+                                        <span className="fw-bold">{jwt_decode<MyToken>(token).username}</span>
                                         <span> | </span>
-                                        <span onClick={handleLogout}>Log out</span>
+                                        <span onClick={handleLogout} className="hover fw-bold">Đăng xuất</span>
                                     </>
                                     :
                                     <>
-                                        <Link to={`/user/login`}>Đăng nhập</Link>
+                                        <Link to={`/user/login`} className='fw-bold text-decoration-none'>Đăng nhập</Link>
                                         <span> | </span>
-                                        <Link to={`/user/register`}>Đăng kí</Link>
+                                        <Link to={`/user/register`} className='fw-bold text-decoration-none'>Đăng kí</Link>
                                     </>}
                             </div>
                         </div>

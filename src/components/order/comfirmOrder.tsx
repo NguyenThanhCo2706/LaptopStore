@@ -1,26 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom'
 import orderApi from '../../api/orderApi';
 import { Order } from '../../models/Order';
 import jwt_decode from "jwt-decode";
+import { MyToken } from '../../models';
 
-
-interface MyToken {
-    username: string;
-    admin: boolean;
-}
 
 
 const ComfirmOrder = () => {
     const orders: Order[] = useAppSelector((state) => state.order.orders)
+    const token: string = useAppSelector((state) => state.user.login.token)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     useEffect(() => {
-        orderApi.getAllOrder(dispatch)
+        orderApi.getAllOrder(dispatch, token)
     }, [])
     const comfirmOrderAdmin = (id: string) => {
-        orderApi.comfirmOrder(id, jwt_decode<MyToken>(localStorage.token).username, dispatch, orders)
+        orderApi.comfirmOrder(id, jwt_decode<MyToken>(localStorage.token).username, dispatch, orders, token)
     }
     const viewDetailOrder = (orderId: string) => {
         navigate(`/viewdetail/${orderId}`)
@@ -58,7 +55,7 @@ const ComfirmOrder = () => {
                         </div>)
                     })}
                 </div>
-                
+
             </div>
         </>
     );

@@ -4,11 +4,6 @@ import { productActions } from "../redux/productSlice"
 import axiosClient from "./axiosClient"
 
 
-
-
-
-
-
 const productApi = {
     async getAll(dispatch: any) {
         dispatch(productActions.getAllProduct_init())
@@ -26,7 +21,6 @@ const productApi = {
         try {
             const url = '/product/category'
             const res = await axiosClient.get(url, { params: { category: category } })
-            console.log(category)
             dispatch(productActions.getAllProduct_success(res.data))
         }
         catch (err) {
@@ -67,7 +61,7 @@ const productApi = {
             await axiosClient.delete(url, {
                 params: { id: id },
                 headers: {
-                    "token": `Bearer ${token}`,
+                    "authorization": `Bearer ${token}`,
                 }
             })
             dispatch(productActions.getAllProduct_success(products.filter(product => product._id !== id)))
