@@ -93,6 +93,9 @@
 .hover{
     cursor: pointer;
 }
+.hover:hover{
+    color:red;
+}
 
 @media screen and (max-width:768px) {
     .input-login-parent {

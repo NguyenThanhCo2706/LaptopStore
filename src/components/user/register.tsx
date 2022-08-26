@@ -41,10 +41,12 @@ const Register = () => {
                         <div className="mb-3">
                             <label className="form-label">Username</label>
                             <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <div id="emailHelp" className="form-text">Username phải có ít nhất 6 kí tự.</div>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password</label>
                             <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <div id="emailHelp" className="form-text">Password phải có ít nhất 6 kí tự.</div>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Re-Password</label>
