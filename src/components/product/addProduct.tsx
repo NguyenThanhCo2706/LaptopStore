@@ -67,58 +67,62 @@ const AddProduct = () => {
     }
 
     return (
-        <div className="container d-flex justify-content-center">
+        <>
+            <div className="container d-flex justify-content-center">
+                <div className="card w-50 m-3 p-3 bg-light">
+                    <div className="mb-3 ">
+                        <label className="form-label">Tên sản phẩm</label>
+                        <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">CPU</label>
+                        <input type="text" className="form-control" value={CPU} onChange={(e) => setCPU(e.target.value)} />
+                    </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">Ram</label>
+                        <input type="text" className="form-control" value={ram} onChange={(e) => setRam(e.target.value)} />
+                    </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">HardDrive</label>
+                        <input type="text" className="form-control" value={hardDrive} onChange={(e) => setHardDrive(e.target.value)} />
+                    </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">Card</label>
+                        <input type="text" className="form-control" value={card} onChange={(e) => setCard(e.target.value)} />
+                    </div>
 
-            <div className="card w-50 m-3 p-3 bg-light">
-                <div className="mb-3 ">
-                    <label className="form-label">Tên sản phẩm</label>
-                    <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div className="mb-3 ">
-                    <label className="form-label">CPU</label>
-                    <input type="text" className="form-control" value={CPU} onChange={(e) => setCPU(e.target.value)} />
-                </div>
-                <div className="mb-3 ">
-                    <label className="form-label">Ram</label>
-                    <input type="text" className="form-control" value={ram} onChange={(e) => setRam(e.target.value)} />
-                </div>
-                <div className="mb-3 ">
-                    <label className="form-label">HardDrive</label>
-                    <input type="text" className="form-control" value={hardDrive} onChange={(e) => setHardDrive(e.target.value)} />
-                </div>
-                <div className="mb-3 ">
-                    <label className="form-label">Card</label>
-                    <input type="text" className="form-control" value={card} onChange={(e) => setCard(e.target.value)} />
-                </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">Operating System</label>
+                        <input type="text" className="form-control" value={operatingSystem} onChange={(e) => setOperatingSystem(e.target.value)} />
+                    </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">Image</label>
+                        <input type="file" className="form-control" onChange={handleFileSelect} />
+                    </div>
+                    <div className="mb-3 ">
+                        <label className="form-label">Price</label>
+                        <input type="text" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} />
+                    </div>
 
-                <div className="mb-3 ">
-                    <label className="form-label">Operating System</label>
-                    <input type="text" className="form-control" value={operatingSystem} onChange={(e) => setOperatingSystem(e.target.value)} />
-                </div>
-                <div className="mb-3 ">
-                    <label className="form-label">Image</label>
-                    <input type="file" className="form-control" onChange={handleFileSelect} />
-                </div>
-                <div className="mb-3 ">
-                    <label className="form-label">Price</label>
-                    <input type="text" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} />
-                </div>
-
-                <div className="mb-3 ">
-                    <label className="form-label">Category</label>
-                    <select className="form-control" value={category} onChange={changeSelect} >
-                        {categories?.map((item, index) => {
-                            return (
-                                <option key={index} value={item._id}>{item.name}</option>
-                            )
-                        })}
-                    </select>
-                </div>
-                <div className="d-flex justify-content-center">
-                    <button className="btn btn-primary btn-success mt-2 p-3" onClick={handleUserClick}>Create</button>
+                    <div className="mb-3 ">
+                        <label className="form-label">Category</label>
+                        <select className="form-control" value={category} onChange={changeSelect} >
+                            {categories?.map((item, index) => {
+                                return (
+                                    <option key={index} value={item._id}>{item.name}</option>
+                                )
+                            })}
+                        </select>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                        <button className="btn btn-primary btn-success mt-2 p-3" onClick={handleUserClick}>Create</button>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div className="container d-flex justify-content-end m-3">
+                <button className="btn btn-secondary" onClick={() => { navigate('/') }}>Back</button>
+            </div>
+        </>
     );
 }
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import productApi from '../../api/productApi';
-import { MyToken, Product } from '../../models/index'
+import { Category, MyToken, Product } from '../../models/index'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import jwt_decode from "jwt-decode";
 
@@ -9,6 +9,7 @@ import jwt_decode from "jwt-decode";
 
 const CategoryProducts = () => {
     const products: Product[] = useAppSelector((state) => state.product.products.allProducts)
+    const categories: Category[] = useAppSelector((state) => state.category.categories.allCategory)
     const token: string = useAppSelector((state) => state.user.login.token)
     const { id } = useParams()
     const dispatch = useAppDispatch()
@@ -20,7 +21,7 @@ const CategoryProducts = () => {
         <>
             <div className="container mb-5">
                 <div className="block-line">
-                    <h2 className="block-line-text">SẢN PHẨM MỚI NHẤT</h2>
+                    <h2 className="block-line-text">SẢN PHẨM CỦA {categories.find(element => element._id === id)?.name.toUpperCase()}</h2>
                 </div>
 
                 <div className="bg-light p-3">

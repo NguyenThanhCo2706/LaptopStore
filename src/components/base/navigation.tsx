@@ -30,8 +30,8 @@ const Navigation = () => {
             <div className="container bg-light position-relative">
                 <nav className="navbar navbar-expand-lg navbar-light ">
                     <div className="container-fluid">
-                        <div className="me-5 p-3 position-relative hover" onClick={handleMouseEnter}>
-                            <div >
+                        <div className="me-5 p-3 position-relative " >
+                            <div onClick={handleMouseEnter} className="hover">
                                 <i className="fa-solid fa-list"></i> Danh Mục sản phẩm
                             </div>
                             <div className="d-flex flex-column position-absolute border bg-white w-100 z-index" onClick={handleMouseEnter}>
