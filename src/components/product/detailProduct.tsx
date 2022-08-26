@@ -62,7 +62,7 @@ const DetailProduct = () => {
                         <div className="col-4 d-flex flex-column">
                             {/* <div className="d-flex"> */}
                             {product.img ? <>
-                                <img src={"/public/uploads/" + product.img} className="card-img-detail" alt="..." />
+                                <img src={"https://laptopstore-api.herokuapp.com/public/uploads/" + product.img} className="card-img-detail" alt="..." />
                             </> : <></>}
                             <ul className="card-body">
                                 <li className="card-text"><b>CPU:</b> {product.CPU}</li>
