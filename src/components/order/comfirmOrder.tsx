@@ -36,7 +36,7 @@ const ComfirmOrder = () => {
                 </div>
                 <div>
                     {orders && orders.map((item, index) => {
-                        return (<div className="d-flex flex-row justify-content-evenly hover" key={index}>
+                        return (<div className="d-flex flex-row justify-content-evenly" key={index}>
                             <p>{index + 1}</p>
                             <p>{item._id}</p>
                             <p>{item.customer}</p>

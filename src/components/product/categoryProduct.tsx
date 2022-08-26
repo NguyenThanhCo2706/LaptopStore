@@ -29,7 +29,7 @@ const CategoryProducts = () => {
                             return (
                                 <div className="col block-item" key={index}>
                                     <div className="card">
-                                        <img src={"/public/uploads/" + item.img} className="card-img-top" alt="..." />
+                                        <img src={"https://laptopstore-api.herokuapp.com/public/uploads/" + item.img} className="card-img-top" alt="..." />
                                         <div className="card-body">
                                             <p className="card-title">{item.name}</p>
                                             <p className="card-text">{item.CPU}, {item.hardDrive}, {item.ram}, {item.operatingSystem}, {item.card}</p>

@@ -44,13 +44,15 @@ const detailOrderApi = {
         dispatch(detailOrderActions.getDetailOrders_init())
         try {
             const url = '/order'
+            const dataForm = new URLSearchParams();
+            dataForm.append("customer", customer)
             await axiosClient({
                 method: "post",
                 url: url,
                 headers: {
                     "authorization": `Bearer ${token}`,
                 },
-                data: { customer: customer }
+                data: dataForm
             })
             dispatch(detailOrderActions.getDetailOrders_success([]))
         }

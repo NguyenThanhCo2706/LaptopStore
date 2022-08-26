@@ -21,7 +21,7 @@ const CartCustomer = () => {
             alert('Giõ hàng trống')
             return
         }
-        detailOrderApi.comfirmOrderUser(jwt_decode<MyToken>(localStorage.token).username, dispatch, token)
+        detailOrderApi.comfirmOrderUser(jwt_decode<MyToken>(token).username, dispatch, token)
     }
     const removeDetailOrder = (id: any) => {
         detailOrderApi.removeDetailOrder(id, dispatch, detailOrders, token)

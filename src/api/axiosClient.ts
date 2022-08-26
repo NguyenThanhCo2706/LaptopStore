@@ -4,7 +4,7 @@ import ResponseGenerator from "../interfaces/responseGenerator";
 
 
 const axiosClient = axios.create({
-    baseURL: "https://laptopstore-api.herokuapp.com"
+    baseURL: "http://localhost:3001"
 });
 
 
